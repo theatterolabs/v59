@@ -1,0 +1,446 @@
+<html lang="en" style="height: 100%;"><head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MayaDweep</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <style>
+     
+     @font-face {
+    font-family: 'font2';
+    src: url('https://snktcodes.github.io/Match-3-RPG-Puzzle-Game/assets/Arialbold.ttf');
+  }
+
+  body {
+    padding: 0;
+    margin: 0;
+    background-color: black;
+
+    font-family: 'font2';
+
+    /*  height: auto !important; */
+  }
+
+  #loaderDiv {
+    opacity: 1;
+    overflow: hidden;
+    position: absolute;
+    background-color: whitesmoke !important;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    z-index: 1010;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+    color: white;
+    font-weight: 100;
+    font-size: 60px;
+    margin: auto;
+  }
+  #loaderDiv div {
+    position: absolute;
+    width: 100%;
+    bottom: 50%;
+  }
+
+  #loaderDiv p {
+    color: black;
+    font-size: 60px;
+    margin: 0;
+  }
+  .gameDiv {
+    opacity: 0;
+    overflow: hidden;
+    position: relative;
+    background-image: linear-gradient(#150325, #150325);
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    z-index: 1010;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+  }
+
+  .gameDiv img {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+  }
+
+  .rectangle {
+    background-color: #504c3c;
+    height: 200vh;
+    width: 2%;
+    bottom: 0;
+  }
+
+  .lds-ripple {
+    display: inline-block;
+    position: relative;
+    width: 80px;
+    height: 80px;
+  }
+  .lds-ripple div {
+    position: absolute;
+    border: 4px solid #000;
+    opacity: 1;
+    border-radius: 50%;
+    animation: lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+  }
+  .lds-ripple div:nth-child(2) {
+    animation-delay: -0.5s;
+  }
+  @keyframes lds-ripple {
+    0% {
+      top: 36px;
+      left: 36px;
+      width: 0;
+      height: 0;
+      opacity: 1;
+    }
+    100% {
+      top: 0px;
+      left: 0px;
+      width: 72px;
+      height: 72px;
+      opacity: 0;
+    }
+  }
+
+  .dummy {
+    display: none;
+    color: #000;
+    position: absolute;
+    top: 0;
+    opacity: 0;
+    z-index: -1;
+  }
+
+  .dummy p {
+    opacity: 0;
+  }
+
+  .dummy p:nth-child(1) {
+    font-family: 'font2';
+  }
+  .dummy p:nth-child(2) {
+    font-family: 'font2';
+  }
+
+  .containerr {
+    display: flex;
+    opacity: 0;
+    position: absolute;
+    align-items: center;
+    justify-content: right;
+    z-index: 100000;
+    width: 300px;
+    height: 10px;
+    bottom: 20%;
+    left: 0;
+    right: 0;
+    margin: auto;
+  }
+
+  .progress {
+    display: inline-block;
+    width: 100%;
+    height: 11px;
+    margin: 35px;
+    margin-top: 150px;
+    border-radius: 20px;
+    background: #f9f9f9;
+    background-image: url('Loader_00.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  .bar {
+    border-radius: 20px;
+    width: 0%;
+    height: 100%;
+    transition: width;
+    transition-duration: 0.05s;
+    transition-timing-function: cubic-bezier(0.36, 0.55, 0.63, 0.48);
+  }
+
+  /*  .mobile {
+        display: none;
+    }
+*/
+  .shadow {
+    /* 25 50 */
+    box-shadow: 0px 45px 50px rgba(0, 0, 0, 0.25);
+  }
+
+  .overlap {
+    background-image: url('Loader_11.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  @media screen and (max-width: 500px) {
+    .progress {
+      width: calc(100vw * 0.7);
+      /* height: calc(100vw * 0.7 * 0.145); */
+      /* height: 40px; */
+      height: 11px;
+      margin: 25px;
+      margin-top: 100px;
+    }
+  }
+
+  #titleleaderboard {
+    font-size: 30px;
+    position: absolute;
+    top: 2%;
+  }
+
+  #bodyleaderboard {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  #bodyleaderboard p {
+    text-align: center;
+  }
+  #photoData {
+    /* top: 10px; */
+    /* margin: 10px; */
+    /* background-color: darkgoldenrod; */
+    height: 100px;
+    border-radius: 15px;
+    background-image: url(Rank_BG.png);
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
+
+  /* The element which contains one/many content sections */
+  .container {
+    display: flex;
+    flex-direction: column;
+    height: 60%;
+    width: 100%;
+    /* overflow-y: scroll; */
+    position: absolute;
+    bottom: 20%;
+    z-index: 100000;
+  }
+
+  /* The container's content you want to add an overflow to */
+  .scrollable-content {
+    flex: 1 1 auto;
+    overflow: auto;
+  }
+
+  .flex-container {
+    display: flex;
+    position: absolute;
+    flex-direction: column;
+    justify-content: center;
+    background-color: DodgerBlue;
+    height: 60%;
+    width: 100%;
+    bottom: 20%;
+    /* overflow-y: hidden; */
+    flex: 1 1 auto;
+    overflow: auto;
+  }
+
+  .flex-container > div {
+    /* background-color: #f1f1f1; */
+    margin: 10px;
+    padding: 20px;
+    font-size: 30px;
+  }
+
+  #flexing {
+    display: flex;
+    flex-direction: column;
+    width: 0;
+    height: 0;
+    opacity: 0;
+    z-index: -1;
+  }
+
+  .tutorialboard {
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.7);
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    /* flex-direction: column; */
+    z-index: -1;
+  }
+
+  .tutorialboard p {
+    position: absolute;
+    bottom: 75%;
+    width: 100%;
+    color: grey;
+    text-align: center;
+    font-family: 'font2';
+  }
+  .tutorialboard img {
+    position: absolute;
+    bottom: 75%;
+    width: 100%;
+    color: grey;
+    text-align: center;
+    font-family: 'font2';
+  }
+
+  .whitebg {
+    background-image: url(Tutorial_Card.png);
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    height: 70%;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+
+  .leaderboard {
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    background-image: linear-gradient(#150325, #150325);
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    z-index: -1;
+    background-image: url(Tile_Background.png);
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+
+  #leaderboardheader {
+    width: 100%;
+    height: 10%;
+    top: 0;
+    /* background-color: blue; */
+    background-image: url(Header.png);
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+
+  #leaderboardtitle {
+    width: 100%;
+    height: 10%;
+    top: 0;
+    /* background-image: url(LeaderBoard_Header.png);
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat; */
+  }
+
+  #flexcontainer {
+    width: 100%;
+    height: 70%;
+    top: 20%;
+    background-color: transparent;
+    display: flex;
+    /* position: absolute; */
+    flex-direction: column;
+    justify-content: center;
+    overflow-y: scroll;
+  }
+
+  #footerleaderboard {
+    width: 100%;
+    height: 10%;
+    bottom: 0;
+
+    background-image: url(Header.png);
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+
+  #tutcard {
+    height: 60%;
+    left: 0;
+    right: 0;
+    margin: auto;
+  }
+
+  #toptxt {
+    height: 15%;
+  }
+
+  #toptxt2 {
+    height: 15%;
+  }
+
+  #maintut {
+    height: 50%;
+  }
+
+  #bottomtxt {
+    height: 20%;
+  }
+     
+    </style>
+  </head>
+  <body style="height: 100%;">
+    <div class="dummy" id="dummy">
+      <p>Hello</p>
+      <p>Hello</p>
+    </div>
+    <div class="containerr" style="opacity: 1; z-index: -1;">
+      <div class="progress">
+        <div class="bar shadow overlap" style="width: 100%;"></div>
+      </div>
+    </div>
+
+    <div id="tutorialboard" class="tutorialboard" style="width: 430.312px; margin-left: 47.5px; margin-top: 0px; height: 765px;">
+      <img src="Tutorial_Card.png" style="bottom: 18%;height: 65%;" id="" alt="">
+      <p style="bottom: 72%;font-size: 20px">Tutorial</p>
+      <p id="p1" style="bottom: 67%;width: 80%;font-size: 18px;color: black">Swipe to Match 3 Gems </p>
+      <p id="p2" style="bottom: 64%;width: 80%;font-size: 18px;color: black">of the Same Color.</p>
+      <img id="tutorialimg" src="tutorialgif.gif" style="width: 45%;bottom: 33%;">
+      <img id="nextbtnId" src="nextbtn.png" style="width: 30%;bottom: 25%;">
+      <img id="donebtnId" src="donebtn.png" style="width: 30%;bottom: 25%;display: none">
+    </div>
+
+    <div class="leaderboard" id="leaderboard" style="width: 430.312px; margin-left: 47.5px; margin-top: 0px; height: 765px;">
+      <div id="leaderboardheader"></div>
+      <div id="leaderboardtitle"></div>
+      <div id="flexcontainer">
+        <div style="
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 80%;
+            left: 0;
+            right: 0;
+            margin: auto;
+          " id="addPlayers" class="cont">
+          <!-- <div id="photoData"><p>Sanket</p><p>100</p></div>
+        <img src="http://graph.facebook.com/2268057976668177/picture" id="imageval" alt=""> -->
+        </div>
+      </div>
+      <div id="footerleaderboard"></div>
+    </div>
+
+    <section id="gameDiv" style="overflow: hidden; width: 100%; height: 100%; display: flex;"><div style="display: block; width: 1242px; height: 2208px; padding: 0px; margin: 0px 0px 0px 47px; position: absolute; overflow: hidden; pointer-events: none; transform: scale(0.346467, 0.346467); transform-origin: left top;"></div><canvas width="1242" height="2208" style="width: 430.312px; height: 765px; margin-left: 47px; margin-top: 0px;"></canvas></section>
+  <script type="text/javascript" src="bundle.min.js"></script>
+
+</body></html>
